@@ -1,17 +1,36 @@
 package com.flimbis.service
 
+import com.flimbis.model.Url
+import com.flimbis.repository.UrlShortenerRepository
+import io.mockk.every
+import io.mockk.mockk
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import java.util.Base64
 
 class UrlShortenerServiceTest {
-
-    @BeforeEach
-    fun setUp() {
-    }
+    val repository: UrlShortenerRepository = mockk()
+    val service: UrlShortenerService = UrlShortenerService(repository)
 
     @Test
-    fun shortenUrl() {
+    fun `create short url`() {
+        // given
+        val someUrl = "https://google.com"
+
+        val encodedUrl = Base64.getUrlEncoder()
+                .encodeToString(someUrl.toByteArray())
+        val url = Url()
+        url.url = someUrl
+        url.shortPath = encodedUrl.substring(0, 5)
+
+        every { repository.save(any()) } returns url
+
+        // when
+        val result = service.shortenUrl(someUrl)
+
+        assertThat(encodedUrl.substring(0, 5)).isEqualTo(result!!.shortPath);
     }
 }
