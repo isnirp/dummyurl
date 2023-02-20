@@ -3,6 +3,8 @@ package com.flimbis.controller
 import com.flimbis.model.UrlDto
 import com.flimbis.service.UrlShortenerService
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,6 +22,12 @@ class UrlShortenerController(private val service: UrlShortenerService) {
     fun createShortUrl(@RequestBody urlDto: UrlDto): UrlDto {
         val url = service.shortenUrl(urlDto.url)
 
-        return UrlDto(BASE_URL + url!!.shortPath)
+        return UrlDto(BASE_URL + url.shortPath)
+    }
+
+    @GetMapping("/decode/{shortPath}")
+    fun retrieveOriginalUrl(@PathVariable shortPath: String): UrlDto {
+        val url = service.getOriginalUrl(shortPath)
+        return UrlDto(url!!)
     }
 }

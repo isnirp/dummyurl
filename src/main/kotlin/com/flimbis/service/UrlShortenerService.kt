@@ -7,7 +7,7 @@ import java.util.Base64
 
 @Service
 class UrlShortenerService(private val repository: UrlShortenerRepository) {
-    fun shortenUrl(originalUrl: String): Url? {
+    fun shortenUrl(originalUrl: String): Url {
         val encodedUrl = Base64.getUrlEncoder()
                 .encodeToString(originalUrl.toByteArray())
 
@@ -20,7 +20,8 @@ class UrlShortenerService(private val repository: UrlShortenerRepository) {
         return shortenedUrl
     }
 
-    fun getOriginalUrl(shortenedUrl: String): Url? {
-        return null
+    fun getOriginalUrl(shortPath: String): String? {
+        val url = repository.findByShortPath(shortPath)
+        return url?.url
     }
 }

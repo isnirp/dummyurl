@@ -33,4 +33,16 @@ class UrlShortenerServiceTest {
 
         assertThat(encodedUrl.substring(0, 5)).isEqualTo(result!!.shortPath);
     }
+
+    @Test
+    fun `return long url`() {
+        val url = Url()
+        url.url = "https://google.com"
+        url.shortPath = "ahuocc"
+
+        every { repository.findByShortPath("ahuocc") } returns url
+
+        val result = service.getOriginalUrl("ahuocc")
+        assertThat(result).isEqualTo(url.url)
+    }
 }

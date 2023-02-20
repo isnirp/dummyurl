@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UrlShortenerRepository: JpaRepository<Url, Long> {
+    fun findByShortPath(shortPath: String): Url?
 }
