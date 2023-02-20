@@ -1,5 +1,6 @@
 package com.flimbis.service
 
+import com.flimbis.exception.NotFoundException
 import com.flimbis.model.Url
 import com.flimbis.repository.UrlShortenerRepository
 import org.springframework.stereotype.Service
@@ -20,6 +21,7 @@ class UrlShortenerService(private val repository: UrlShortenerRepository) {
         return shortenedUrl
     }
 
+    @Throws(NotFoundException::class)
     fun getOriginalUrl(shortPath: String): String? {
         val url = repository.findByShortPath(shortPath)
         return url?.url
