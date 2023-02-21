@@ -17,13 +17,12 @@ class UrlShortenerService(private val repository: UrlShortenerRepository) {
         shortenedUrl.shortPath = encodedUrl.substring(0, 5)
 
         repository.save(shortenedUrl)
-
         return shortenedUrl
     }
 
     @Throws(NotFoundException::class)
     fun getOriginalUrl(shortPath: String): String? {
         val url = repository.findByShortPath(shortPath)
-        return url?.url
+        return url?.url ?: throw NotFoundException("Url not found")
     }
 }

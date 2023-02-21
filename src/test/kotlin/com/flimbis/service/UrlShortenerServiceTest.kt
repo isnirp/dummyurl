@@ -1,10 +1,11 @@
 package com.flimbis.service
 
+import com.flimbis.exception.NotFoundException
 import com.flimbis.model.Url
 import com.flimbis.repository.UrlShortenerRepository
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -44,5 +45,18 @@ class UrlShortenerServiceTest {
 
         val result = service.getOriginalUrl("ahuocc")
         assertThat(result).isEqualTo(url.url)
+    }
+
+    @Test
+    fun `throw not found exception`() {
+        every { repository.findByShortPath(any()) } returns null
+
+        // 1
+        /*assertThatThrownBy { service.getOriginalUrl("ahuocc") }
+                .isInstanceOf(NotFoundException::class.java)
+                .hasMessage("Url not found")*/
+        // 2
+        assertThatExceptionOfType(NotFoundException::class.java)
+                .isThrownBy { service.getOriginalUrl("ahuocc") }
     }
 }

@@ -21,7 +21,6 @@ class UrlShortenerController(private val service: UrlShortenerService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun createShortUrl(@RequestBody urlDto: UrlDto): UrlDto {
         val url = service.shortenUrl(urlDto.url)
-
         return UrlDto(BASE_URL + url.shortPath)
     }
 
