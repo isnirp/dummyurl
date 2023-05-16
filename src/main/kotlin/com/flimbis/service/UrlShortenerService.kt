@@ -20,7 +20,6 @@ class UrlShortenerService(private val repository: UrlShortenerRepository) {
         return shortenedUrl
     }
 
-    @Throws(NotFoundException::class)
     fun getOriginalUrl(shortPath: String): String? {
         val url = repository.findByShortPath(shortPath)
         return url?.url ?: throw NotFoundException("Url not found")
